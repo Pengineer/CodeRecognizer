@@ -28,8 +28,12 @@ public class CaptchaRecognizer {
 	 * 下载待训练图片
 	 * @param num 下载数
 	 * @param storagePath 下载存储路径
+	 * @param fileName 当num=1时有效，且num=1时fileName也可为null
 	 */
-	public static void downloadImage(int num, String storagePath) {
+	public static void downloadImage(int num, String storagePath, String fileName) {
+		if(num != 1 && fileName != null) {
+			throw new RuntimeException("输入有误！");
+		}
 		HttpClient httpClient = new HttpClient();
 		GetMethod getMethod = null;
 		for (int i = 0; i < num; i++) {
@@ -42,11 +46,13 @@ public class CaptchaRecognizer {
 				}
 				// 读取内容
 				String picName = storagePath +  i + ".jpg";
+				if (num == 1 && fileName != null) {
+					picName = storagePath + fileName;
+				}
 				InputStream inputStream = getMethod.getResponseBodyAsStream();
 				OutputStream outStream = new FileOutputStream(picName);
 				IOUtils.copy(inputStream, outStream);
 				outStream.close();
-				System.out.println(i + "OK!");
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
@@ -149,6 +155,7 @@ public class CaptchaRecognizer {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		System.out.println(System.getProperty("user.dir"));
+		downloadImage(1, System.getProperty("user.dir") + "\\temp\\", "validatecode.jpg");
+		System.out.println(recognize(System.getProperty("user.dir") + "\\temp\\validatecode.jpg"));
 	}
 }
