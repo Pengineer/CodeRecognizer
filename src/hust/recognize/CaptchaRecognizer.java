@@ -18,14 +18,13 @@ import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.io.IOUtils;
 
-
 public class CaptchaRecognizer {
 	
 	private static Map<BufferedImage, String> trainMap = null;
 	private static int index = 0;
 
 	/**
-	 * 下载待训练图片
+	 * 请求验证码图片
 	 * @param num 下载数
 	 * @param storagePath 下载存储路径
 	 * @param fileName 当num=1时有效，且num=1时fileName也可为null
